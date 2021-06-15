@@ -17,8 +17,8 @@
 > Feel free to reach out at any time. I ran a few of the initial samples through this pipeline and got stuck distally with the merge bam function and haven’t had the time to go back and resolve.
 
 
-##To run this project (on e.g. fileBases1.txt)
-###run from Abazeed-480 folder unless otherwise noted, click on triangles to expand
+## To run this project (on e.g. fileBases1.txt)
+### run from Abazeed-480 folder unless otherwise noted, click on triangles to expand
 <details> 
 	<summary>Get data and trim it</summary> 
 	<ol>
