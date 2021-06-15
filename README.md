@@ -41,24 +41,25 @@
 
 <details>
 	<summary>Split data into human and mouse using bbsplit and create filtered bam files</summary>
-	<ol, start="5">
-		<li>for i in `cat data/reads/fileBases1.txt`; do sbatch scripts/_01_02_bbsplit_to_bam.sh $i; done # This can be split up into 01 (bbmap) and 02 (make bam files)</li>
+	<ol start="5">
+		<li>for i in `cat data/reads/fileBases1.txt`; do sbatch scripts/_01_02_bbsplit_to_bam.sh $i; done</li>
 	</ol>
 	<ul>
+	<li> This can be split up into 01 (bbmap) and 02 (make bam files)
 	<li>_01_02 goes from trimmed reads all the way to processed bam files. Also creates a stat file recording how many reads are mouse and how many are human. See analysis/bbmap_stats</li>
 	</ul>
 </details>
 
 <details>
 	<summary>Create vcf files, convert to maf files</summary>
-	<ol, start="6">
+	<ol start="6">
 		<li>edit scripts/_03_make_mutect2_script.sh to call the proper fileBases file</li>
 		<li>zsh scripts/_03_make_mutect2_script.sh</li>
 	</ol>
 	<ul>
 		<li>This bash script uses a python script I wrote which creates the mutect2 script based on the file names (with P1 and P2 being tumor, and PBL being matched normals). The template being used is in Abazeed-480/templates</li>
 	</ul>
-	<ol, start="8">
+	<ol start="8">
 		<li>for i in `ls CBX*.sh`; do sbatch $i; done</li>
 	</ol>
 	<ul>
@@ -70,7 +71,7 @@
 
 <details>
 	<summary>Concatenate the per-sample MAFs together, making sure that the MAF header is not duplicated</summary>
-	<ol, start="9">
+	<ol start="9">
 		<li>cd analysis/vcf2maf_out</li>
 		<li>cat *.maf | egrep "^#|^Hugo_Symbol" | head -2 > allsamples.vep.maf</li>
 		<li>cat *.maf | egrep -v "^#|^Hugo_Symbol" >> allsamples.vep.maf</li>
@@ -79,7 +80,7 @@
 
 <details>
 	<summary>Run mutsig in matlab</summary>
-	<ol, start="12">
+	<ol start="12">
 		<li>cd ../../ # go back to Abazeed-480 folder</li>
 		<li>module load matlab</li> 
 		<li>matlab</li>
