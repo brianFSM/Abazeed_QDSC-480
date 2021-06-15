@@ -33,11 +33,15 @@ Notes:
 - Due to space limitations on quest I processed the reads here in batches. I was careful to not split samples across batches. There are a total of 266 PE reads, so 532 fastq files. I split it up into 7 batches.
 
 - To run this project (on e.g. fileBases1.txt), run from Abazeed-480 folder unless otherwise noted
-# Get data and trim it
-1. Transfer fastq files from FSMResFiles to quest using globus
-1a. rename _1.fq.gz _R1.fq.gz ./*.gz
-1b. rename _2.fq.gz _R2.fq.gz ./*.gz
-2. in data folder: loopRNASeqPipeline hg38 -trim -pe
+<details>
+           <summary>Get data and trim it</summary>
+           <ol>
+		<li>Transfer fastq files from FSMResFiles to quest using globus</li>
+		<li>rename _1.fq.gz _R1.fq.gz ./*.gz</li>
+		<li>rename _2.fq.gz _R2.fq.gz ./*.gz</li>
+		<li>in data folder: loopRNASeqPipeline hg38 -trim -pe</li>
+	  </ol>
+         </details>
 
 # Split data into human and mouse using bbsplit and create filtered bam files
 3. for i in `cat data/reads/fileBases1.txt`; do sbatch scripts/_01_02_bbsplit_to_bam.sh $i; done # This can be split up into 01 (bbmap) and 02 (make bam files)
