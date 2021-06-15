@@ -28,49 +28,74 @@
 - python
 
 
-Notes:
-
-- Due to space limitations on quest I processed the reads here in batches. I was careful to not split samples across batches. There are a total of 266 PE reads, so 532 fastq files. I split it up into 7 batches.
-
-- To run this project (on e.g. fileBases1.txt), run from Abazeed-480 folder unless otherwise noted
-<details>
-           <summary>Get data and trim it</summary>
-           <ol>
+### To run this project (on e.g. fileBases1.txt), run from Abazeed-480 folder unless otherwise noted
+<details> 
+	<summary>Get data and trim it</summary> 
+	<ol>
 		<li>Transfer fastq files from FSMResFiles to quest using globus</li>
 		<li>rename _1.fq.gz _R1.fq.gz ./*.gz</li>
 		<li>rename _2.fq.gz _R2.fq.gz ./*.gz</li>
-		<li>in data folder: loopRNASeqPipeline hg38 -trim -pe</li>
-	  </ol>
-         </details>
+		<li>in data folder: loopRNASeqPipeline hg38 -trim -pe</li> 
+	</ol> 	
+</details>
 
-# Split data into human and mouse using bbsplit and create filtered bam files
-3. for i in `cat data/reads/fileBases1.txt`; do sbatch scripts/_01_02_bbsplit_to_bam.sh $i; done # This can be split up into 01 (bbmap) and 02 (make bam files)
-	- _01_02 goes from trimmed reads all the way to processed bam files. Also creates a stat file recording how many reads are mouse and how many are human. See analysis/bbmap_stats
+<details>
+	<summary>Split data into human and mouse using bbsplit and create filtered bam files</summary>
+	<ol, start="5">
+		<li>for i in `cat data/reads/fileBases1.txt`; do sbatch scripts/_01_02_bbsplit_to_bam.sh $i; done # This can be split up into 01 (bbmap) and 02 (make bam files)</li>
+	</ol>
+	<ul>
+	<li>_01_02 goes from trimmed reads all the way to processed bam files. Also creates a stat file recording how many reads are mouse and how many are human. See analysis/bbmap_stats</li>
+	</ul>
+</details>
 
-# Create vcf files, convert to maf files
-4. edit scripts/_03_make_mutect2_script.sh to call the proper fileBases file
-5. zsh scripts/_03_make_mutect2_script.sh
-	- This bash script uses a python script I wrote which creates the mutect2 script based on the file names (with P1 and P2 being tumor, and PBL being matched normals). The template being used is in Abazeed-480/templates
-6. for i in `ls CBX*.sh`; do sbatch $i; done # This creates the vcf file and converts it to maf. I move the scripts to scripts/mutect2_scripts when they're done
+<details>
+	<summary>Create vcf files, convert to maf files</summary>
+	<ol, start="6">
+		<li>edit scripts/_03_make_mutect2_script.sh to call the proper fileBases file</li>
+		<li>zsh scripts/_03_make_mutect2_script.sh</li>
+	</ol>
+	<ul>
+		<li>This bash script uses a python script I wrote which creates the mutect2 script based on the file names (with P1 and P2 being tumor, and PBL being matched normals). The template being used is in Abazeed-480/templates</li>
+	</ul>
+	<ol, start="8">
+		<li>for i in `ls CBX*.sh`; do sbatch $i; done</li>
+	</ol>
+	<ul>
+		<li>This creates the vcf file and converts it to maf. I move the scripts to scripts/mutect2_scripts when they're done</li>
+	</ul>
+</details>
 
-# do the following steps after all of the samples have been made into MAF files
+### do the following steps after all of the samples have been made into MAF files
 
-# Concatenate the per-sample MAFs together, making sure that the MAF header is not duplicated:
-7. cd analysis/vcf2maf_out
-8. cat *.maf | egrep "^#|^Hugo_Symbol" | head -2 > allsamples.vep.maf
-9. cat *.maf | egrep -v "^#|^Hugo_Symbol" >> allsamples.vep.maf
+<details>
+	<summary>Concatenate the per-sample MAFs together, making sure that the MAF header is not duplicated</summary>
+	<ol, start="9">
+		<li>cd analysis/vcf2maf_out</li>
+		<li>cat *.maf | egrep "^#|^Hugo_Symbol" | head -2 > allsamples.vep.maf</li>
+		<li>cat *.maf | egrep -v "^#|^Hugo_Symbol" >> allsamples.vep.maf</li>
+	</ol>
+</details>
 
-# Run mutsig in matlab
-10. cd ../../ # go back to Abazeed-480 folder
-11. module load matlab
-12. matlab
-13. cd software/MutSigCV_1.41
-14. MutSigCV('../../analysis/vcf2maf_out/allsamples.vep.maf', '../../mutsig_files/exome_full192.coverage.txt', '../../mutsig_files/gene.covariates.txt', '../../analysis/mutsig_results/all_samples_hg38.txt', '../../mutsig_files/mutation_type_dictionary_file.txt', 'chr_files_hg38' )
+<details>
+	<summary>Run mutsig in matlab</summary>
+	<ol, start="12">
+		<li>cd ../../ # go back to Abazeed-480 folder</li>
+		<li>module load matlab</li> 
+		<li>matlab</li>
+		<li>cd software/MutSigCV_1.41</li>
+		<li>MutSigCV('../../analysis/vcf2maf_out/allsamples.vep.maf', '../../mutsig_files/exome_full192.coverage.txt', '../../mutsig_files/gene.covariates.txt', '../../analysis/mutsig_results/all_samples_hg38.txt', '../../mutsig_files/mutation_type_dictionary_file.txt', 'chr_files_hg38' )</li>
+	</ol>
+</details>
+
+### Notes:
+
+- Due to space limitations on quest I processed the reads here in batches. I was careful to not split samples across batches. There are a total of 266 PE reads, so 532 fastq files. I split it up into 7 batches.
 
 
 - The data are available on fsmresfiles at (globus path): /rdss/bwp9287/fsmresfiles/Radiation_Oncology/Abazeed_Lab/CC_Data/mea_corner/Novogene/C202SC18122898/raw_data/all/
 
-- mutsig notes:
+#### mutsig notes:
 > Mutsig requires input files that are a challenge to figure out. [This link](https://www.biostars.org/p/164608/) suggests that you don't really need to generate these files yourself, but [this link](http://software.broadinstitute.org/cancer/cga/mutsig_run) suggests that the versions of these files provided by mutsig only work for hg18 or hg19, whereas I'm using hg38. It looks to me like the only files that have coordinates in them are the chr_files_hg38 files.
 
 I created the chr_files_hg38 files myself. The chromosome names in the hg38.fa (/projects/b1012/xvault/REFERENCES/builds/hg38/bundle/hg38.fa) from GATK are full of spaces and non-chr information. Here are the steps I used to create the chr_files_hg38
