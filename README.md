@@ -17,18 +17,8 @@
 > Feel free to reach out at any time. I ran a few of the initial samples through this pipeline and got stuck distally with the merge bam function and haven’t had the time to go back and resolve.
 
 
-
-### Tools used:
-- [bbsplit](https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbmap-guide/):
-    > "BBSplit internally uses BBMap to map reads to multiple genomes at once, and determine which genome they match best."
-- bwa (created analysis-ready bams per the instructions in GATK's best practices, using GATK bwa reference)
-- GATK (mutect2)
-- [vcf2maf](https://github.com/mskcc/vcf2maf)
-- [mutsig](http://software.broadinstitute.org/cancer/cga/mutsig)
-- python
-
-
-### To run this project (on e.g. fileBases1.txt), run from Abazeed-480 folder unless otherwise noted
+##To run this project (on e.g. fileBases1.txt)
+###run from Abazeed-480 folder unless otherwise noted, click on triangles to expand
 <details> 
 	<summary>Get data and trim it</summary> 
 	<ol>
@@ -89,10 +79,20 @@
 	</ol>
 </details>
 
+
+
+### Tools used:
+- [bbsplit](https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbmap-guide/):
+    > "BBSplit internally uses BBMap to map reads to multiple genomes at once, and determine which genome they match best."
+- bwa (created analysis-ready bams per the instructions in GATK's best practices, using GATK bwa reference)
+- GATK (mutect2)
+- [vcf2maf](https://github.com/mskcc/vcf2maf)
+- [mutsig](http://software.broadinstitute.org/cancer/cga/mutsig)
+- python
+
 ### Notes:
 
 - Due to space limitations on quest I processed the reads here in batches. I was careful to not split samples across batches. There are a total of 266 PE reads, so 532 fastq files. I split it up into 7 batches.
-
 
 - The data are available on fsmresfiles at (globus path): /rdss/bwp9287/fsmresfiles/Radiation_Oncology/Abazeed_Lab/CC_Data/mea_corner/Novogene/C202SC18122898/raw_data/all/
 
