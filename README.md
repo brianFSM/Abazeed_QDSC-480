@@ -88,13 +88,21 @@
 - GATK (mutect2)
 - [vcf2maf](https://github.com/mskcc/vcf2maf)
 - [mutsig](http://software.broadinstitute.org/cancer/cga/mutsig)
-- python
+- python 3
 
 ### Notes:
 
 - Due to space limitations on quest I processed the reads here in batches. I was careful to not split samples across batches. There are a total of 266 PE reads, so 532 fastq files. I split it up into 7 batches.
 
 - The data are available on fsmresfiles at (globus path): /rdss/bwp9287/fsmresfiles/Radiation_Oncology/Abazeed_Lab/CC_Data/mea_corner/Novogene/C202SC18122898/raw_data/all/
+
+The following samples showed zero variants:
+- CBX361, only a single PBL sample, no tumors
+- CBX420, only 2 PBL samples, no tumors
+- CBX453, only a single PBL sample, no tumors
+- CCX148, ran twice to confirm, not sure what the issue is. There are 2 P1 samples and 1 PBL sample. The PBL sample is really small (bam file is only 48k), but there are 2 tumors. I'll have to do a bunch of reading to figure this out. 
+- CCX215, only had 2 PBL (normal) samples, no tumors
+
 
 #### mutsig notes:
 > Mutsig requires input files that are a challenge to figure out. [This link](https://www.biostars.org/p/164608/) suggests that you don't really need to generate these files yourself, but [this link](http://software.broadinstitute.org/cancer/cga/mutsig_run) suggests that the versions of these files provided by mutsig only work for hg18 or hg19, whereas I'm using hg38. It looks to me like the only files that have coordinates in them are the chr_files_hg38 files.
@@ -124,6 +132,7 @@ For some reason I could only get mutsig to work when I put chr_files_hg38 in the
 This project took a long time to get started because I was having difficulty getting access to the reads. They were stored on FSMResFiles, but getting me access took IT some time. Originally, Matt had copied over the reads for me, but he had only succesffully copied over about 120 of the 532 fastq files. 
 
 Here's the complete list of fastq files:
+
 -rw-r--r-- 1 bwp9287  333M Mar  5 12:19 CBX112A_P2_USE160373L-A1-A55_HJF23DSXX_L1_R1.fq.gz
 -rw-r--r-- 1 bwp9287  338M Mar  5 12:19 CBX112A_P2_USE160373L-A1-A55_HJF23DSXX_L1_R2.fq.gz
 -rw-r--r-- 1 bwp9287  5.5G Mar  5 09:02 CBX112A_P2_USE160373L-A1-A55_HJKGJDSXX_L3_R1.fq.gz
